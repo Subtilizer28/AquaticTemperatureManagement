@@ -27,6 +27,11 @@ body {
     margin-top: 10px;
     border-radius: 40px;
     margin-top: 20px;
+    transition: transform 250ms;
+}
+
+.btn1:hover {
+    transform: scale(1.1)
 }
 
 .btn2 {
@@ -35,7 +40,12 @@ body {
     width: 200px;
     height: 75px;
     border-radius: 40px;
-    margin-bottom: 20px
+    margin-bottom: 20px;
+    transition: transform 250ms;
+}
+
+.btn2:hover {
+    transform: scale(1.1)
 }
 
 .icon {
