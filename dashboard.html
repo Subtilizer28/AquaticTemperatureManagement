@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="./styles/dashboard.css">
+        <script type='text/javascript' src='./config.js'></script>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+            import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+            const firebaseConfig = {
+              apiKey: config.apiKey,
+              authDomain: config.authDomain,
+              databaseURL: config.databaseURL,
+              projectId: config.projectId,
+              storageBucket: config.storageBucket,
+              messagingSenderId: config.messagingSenderId,
+              appId: config.appId
+            };
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase();
+            const tempRef = ref(db, 'temp');
+            onValue(tempRef, (snapshot) => {
+                const tempData = snapshot.val();
+                document.getElementById('fahrenheit-value').textContent = tempData["Fahrenheit"] || 'N/A';
+                document.getElementById('celsius-value').textContent = tempData["Celsius"] || 'N/A';
+                document.getElementById('time').textContent = tempData["time"] || 'N/A';
+            });
+          </script>
+    </head>
+    <body>
+        <center><div class="main">
+            <div class="temperature">
+                <h1 class="tempinfo"><center><p>Temperature</p>
+                <p><span id="celsius-value"></span>°C</p>
+                <p><span id="fahrenheit-value"></span>°F</p>
+                </center></h1>
+            </div>
+            <div class="graph">
+                <h1 class="graphinfo"><center><p>Analytical Graph</p>
+                </center></h1>
+            </div>
+            <div class="timeinfo">
+                <h1 class="timeinfo"><center><p>Last Update of Sensor</p>
+                <br>
+                <p><span id="time"></span></p>
+                </center></h1>
+            </div>
+        </div></center>
+    </body>
+</html>

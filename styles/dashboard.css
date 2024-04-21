@@ -1,0 +1,49 @@
+body {
+    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(70,248,252,1) 100%);
+}
+
+.main {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    width: 1200px;
+    height: 600px;
+    background-color: rgb(255, 255, 255,0.3);
+    border-radius: 15px;
+    justify-content: center;
+}
+
+.temperature {
+    background-color: rgb(255, 255, 255,0);
+    border-radius: 15px;
+    justify-content: center;
+    transition: transform 250ms;
+}
+
+.graph {
+    background-color: rgb(255, 255, 255,0);
+    border-radius: 15px;
+    justify-content: center;
+    transition: transform 250ms;
+}
+
+.timeinfo {
+    background-color: rgb(255, 255, 255,0);
+    border-radius: 15px;
+    justify-content: center;
+    grid-column: span 2;
+    transition: transform 250ms;
+}
+
+
+.temperature:hover {
+    transform: scale(0.9)
+}
+
+.graph:hover {
+    transform: scale(0.9)
+}
+
+.timeinfo:hover {
+    transform: scale(0.9)
+}
