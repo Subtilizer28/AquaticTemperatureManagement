@@ -5,7 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Dashboard</title>
         <link rel="stylesheet" href="./styles/dashboard.css">
-        <script type='text/javascript' src='./config.js'></script>
+        <script type='text/javascript' src='config.js'></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
             import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
@@ -27,23 +28,85 @@
                 document.getElementById('celsius-value').textContent = tempData["Celsius"] || 'N/A';
                 document.getElementById('time').textContent = tempData["time"] || 'N/A';
             });
+            // Create the Chart.js chart
+            const ctx = document.getElementById('temperatureChart').getContext('2d');
+            const temperatureChart = new Chart(ctx, {
+                type: 'line',
+                    data: {
+                        labels: [], // Time labels
+                        datasets: [{
+                            label: 'Temperature Graph',
+                            data: [], // Temperature data
+                            borderColor: 'black',
+                            backgroundColor: 'rgba(0, 0, 255, 0.4)',
+                        }]
+                    },
+                    options: {
+                        animations: {
+                            tension: {
+                                duration: 1000,
+                                easing: 'linear',
+                                from: 1,
+                                to: 0,
+                                loop: true
+                            
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time',
+                                    color: 'black'
+                                },
+                                ticks: {
+                                     color: 'black' // X-axis ticks color
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Temperature (°C)',
+                                    color: 'black'
+                                },
+                                ticks: {
+                                    color: 'black' // X-axis ticks color
+                                }
+                            }
+                        }
+                    }
+                });
+            // Update chart when new data is added to Firebase
+            onValue(tempRef, (snapshot) => {
+                const tempData = snapshot.val();
+                const time = tempData["time"] || 'N/A';
+                const temperature = tempData["Celsius"] || 'N/A';
+                // Update chart data
+                temperatureChart.data.labels.push(time);
+                temperatureChart.data.datasets[0].data.push(temperature);
+                temperatureChart.update();
+            });
           </script>
     </head>
     <body>
         <center><div class="main">
             <div class="temperature">
                 <h1 class="tempinfo"><center><p>Temperature</p>
+                <br>
                 <p><span id="celsius-value"></span>°C</p>
                 <p><span id="fahrenheit-value"></span>°F</p>
                 </center></h1>
             </div>
             <div class="graph">
                 <h1 class="graphinfo"><center><p>Analytical Graph</p>
-                </center></h1>
+                </center>
+                <canvas id="temperatureChart" style="height: 240px;display: block;box-sizing: border-box;width: 500px; padding: 10px; margin-top: -30px;">
+                </canvas>
+            </h1>
             </div>
-            <div class="timeinfo">
-                <h1 class="timeinfo"><center><p>Last Update of Sensor</p>
-                <br>
+            <div class="time">
+                <h1 class="timeinfo">
+                <center><p>Last Update of Sensor</p>
                 <p><span id="time"></span></p>
                 </center></h1>
             </div>
